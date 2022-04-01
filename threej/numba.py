@@ -1,7 +1,7 @@
 '''numba support'''
 
 import numpy as np
-from numba import njit, types
+from numba import types
 from numba.extending import overload
 from numba.core.errors import TypingError
 
