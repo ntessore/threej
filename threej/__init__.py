@@ -354,27 +354,6 @@ def _threejj(l2, l3, m2, m3, out):
 def _threejj_00(l2, l3, thrcof):
     '''_threejj(..., m2=0, m3=0, ...)'''
 
-    def norm(l2, l3, sumuni, thrcof):
-        # Normalize 3j coefficients
-        cnorm = 1 / sqrt(sumuni)
-
-        # Sign convention for last 3j coefficient determines overall phase
-        sign1 = copysign(1, thrcof[-1])
-        sign2 = (-1)**int(fabs(l2-l3)+EPS)
-        if sign1*sign2 < 0:
-            cnorm = -cnorm
-
-        if fabs(cnorm) < 1:
-            thresh = TINY / fabs(cnorm)
-            for n in range(len(thrcof)):
-                if fabs(thrcof[n]) < thresh:
-                    thrcof[n] = 0
-                else:
-                    thrcof[n] = cnorm * thrcof[n]
-        else:
-            for n in range(len(thrcof)):
-                thrcof[n] = cnorm * thrcof[n]
-
     # cast parameters to float (for numba typing)
     l2, l3 = float(l2), float(l3)
 
@@ -416,7 +395,26 @@ def _threejj_00(l2, l3, thrcof):
                     thrcof[-j] /= SRHUGE
             sum2 /= HUGE
 
-    norm(l2, l3, sum2, thrcof)
+    # Normalize 3j coefficients
+    cnorm = 1 / sqrt(sum2)
+
+    # Sign convention for last 3j coefficient determines overall phase
+    sign1 = copysign(1, thrcof[-1])
+    sign2 = (-1)**int(fabs(l2-l3)+EPS)
+    if sign1*sign2 < 0:
+        cnorm = -cnorm
+
+    if fabs(cnorm) < 1:
+        thresh = TINY / fabs(cnorm)
+        for n in range(nfin):
+            if fabs(thrcof[n]) < thresh:
+                thrcof[n] = 0
+            else:
+                thrcof[n] = cnorm * thrcof[n]
+    else:
+        for n in range(nfin):
+            thrcof[n] = cnorm * thrcof[n]
+
     return l1min, thrcof
 
 
