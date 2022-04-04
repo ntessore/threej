@@ -378,6 +378,14 @@ def threejj(l2, l3, m2, m3, out=None):
     >>> thrcof
     [0.239045..., 0.267261..., 0.154303...]
 
+    Half-integer arguments are fully supported.
+
+    >>> l1min, thrcof = threej.threejj(5/2, 3/2, 1/2, -1/2)
+    >>> l1min
+    1.0
+    >>> thrcof
+    [0.316227..., 0.119522..., -0.169030..., -0.218217...]
+
     '''
 
     if out is None:
