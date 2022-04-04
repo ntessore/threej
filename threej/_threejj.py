@@ -1,7 +1,6 @@
 '''threejj implementation'''
 
 from math import sqrt, fabs, copysign
-from array import array
 from sys import float_info
 
 # constants
@@ -377,13 +376,13 @@ def threejj(l2, l3, m2, m3, out=None):
     >>> l1min
     2.0
     >>> thrcof
-    array('d', [0.239045..., 0.267261..., 0.154303...])
+    [0.239045..., 0.267261..., 0.154303...]
 
     '''
 
-    l1min = max(abs(l2-l3), abs(m2+m3))
-    l1max = l2+l3
-    n = max(int(l1max-l1min+1+EPS), 0)
     if out is None:
-        out = array('d', [0.]*n)
+        l1min = max(abs(l2-l3), abs(m2+m3))
+        l1max = l2+l3
+        n = max(int(l1max-l1min+1+EPS), 0)
+        out = [0.]*n
     return _threejj(l2, l3, m2, m3, out)
